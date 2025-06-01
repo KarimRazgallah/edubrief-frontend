@@ -1,5 +1,7 @@
 import { fetchCourses } from "../../lib/fetchCourses";
 import Link from "next/link";
+import SearchBar from "@/components/SearchBar";
+import NewsletterFormContainer from "@/components/NewsletterFormContainer";
 
 export default async function Home() {
   const courses = await fetchCourses();
@@ -14,25 +16,14 @@ export default async function Home() {
         <p className="text-lg md:text-xl text-blue-700 mb-6">
           Discover short, expert-led courses and insightful blog posts.
         </p>
-        {/* Search Bar Placeholder */}
-        <div className="flex justify-center">
-          <input
-            type="text"
-            placeholder="Search courses, posts, instructors..."
-            className="w-full max-w-md px-4 py-2 rounded-l-md border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            disabled
-          />
-          <button className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-r-md cursor-not-allowed">
-            Search
-          </button>
+        {/* Search Bar Component */}
+        <div className="max-w-md mx-auto">
+          <SearchBar />
         </div>
-        <span className="text-xs text-blue-400 mt-2 block">
-          (Search coming soon)
-        </span>
       </section>
 
       {/* Courses Grid */}
-      <section className="max-w-6xl mx-auto">
+      <section className="max-w-6xl mx-auto mb-12">
         <h2 className="text-2xl font-bold text-blue-800 mb-6">
           Featured Courses
         </h2>
@@ -67,6 +58,20 @@ export default async function Home() {
             </div>
           ))}
         </div>
+        
+        <div className="mt-6 text-center">
+          <Link 
+            href="/courses" 
+            className="inline-block bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium py-2 px-6 rounded-md transition-colors"
+          >
+            View All Courses
+          </Link>
+        </div>
+      </section>
+      
+      {/* Newsletter Section */}
+      <section className="max-w-2xl mx-auto">
+        <NewsletterFormContainer variant="default" />
       </section>
     </main>
   );
