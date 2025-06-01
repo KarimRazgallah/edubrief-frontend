@@ -1,41 +1,18 @@
-import { fetchCourses } from "../../lib/fetchCourses";
+import { fetchCourses } from "../../../lib/fetchCourses";
 import Link from "next/link";
 
-export default async function Home() {
+export default async function CoursesPage() {
   const courses = await fetchCourses();
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-white to-blue-50 px-4 py-8">
-      {/* Hero Section */}
-      <section className="max-w-3xl mx-auto text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-blue-900 mb-4">
-          Welcome to EduBrief
+      <section className="max-w-6xl mx-auto mb-10">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-blue-900 mb-4 text-center">
+          All Courses
         </h1>
-        <p className="text-lg md:text-xl text-blue-700 mb-6">
-          Discover short, expert-led courses and insightful blog posts.
+        <p className="text-center text-blue-700 mb-8">
+          Browse all available courses. Filter and search coming soon!
         </p>
-        {/* Search Bar Placeholder */}
-        <div className="flex justify-center">
-          <input
-            type="text"
-            placeholder="Search courses, posts, instructors..."
-            className="w-full max-w-md px-4 py-2 rounded-l-md border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            disabled
-          />
-          <button className="px-4 py-2 bg-blue-600 text-white font-semibold rounded-r-md cursor-not-allowed">
-            Search
-          </button>
-        </div>
-        <span className="text-xs text-blue-400 mt-2 block">
-          (Search coming soon)
-        </span>
-      </section>
-
-      {/* Courses Grid */}
-      <section className="max-w-6xl mx-auto">
-        <h2 className="text-2xl font-bold text-blue-800 mb-6">
-          Featured Courses
-        </h2>
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {courses.map((course: any) => (
             <div

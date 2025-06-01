@@ -8,6 +8,7 @@ export async function fetchCourses() {
         courses {
           nodes {
             id
+            databaseId
             title
             courses {
               difficulty
