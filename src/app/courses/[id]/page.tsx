@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 import client from "../../../../lib/apolloClient";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
 interface CourseDetailProps {
   params: { id: string };
@@ -19,6 +20,29 @@ async function fetchCourseById(id: string) {
             difficulty
             duration
             tags
+            instructor {
+              node {
+                ... on Instructor {
+                  id
+                  slug
+                  title
+                  instructors {
+                    bio
+                    socialLinks {
+                      fieldGroupName
+                      linkedin
+                      twitter
+                      website
+                    }
+                    photo {
+                      node {
+                        mediaItemUrl
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -32,6 +56,10 @@ async function fetchCourseById(id: string) {
 export default async function CourseDetailPage({ params }: CourseDetailProps) {
   const course = await fetchCourseById(params.id);
   if (!course) return notFound();
+  // Get instructor info from the new query structure
+  const instructor = course.courses?.instructor?.node?.instructors;
+  const instructorSlug = course.courses?.instructor?.node?.slug;
+  const instructorName = course.courses?.instructor?.node?.title;
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-white to-blue-50 px-4 py-8">
@@ -52,6 +80,29 @@ export default async function CourseDetailPage({ params }: CourseDetailProps) {
             {course.courses.duration}
           </span>
         </div>
+        {instructor && (
+          <div className="flex items-center gap-3 mb-6">
+            {instructor.photo?.node?.mediaItemUrl && (
+              <img
+                src={instructor.photo.node.mediaItemUrl}
+                alt={instructorSlug}
+                className="w-10 h-10 rounded-full border"
+              />
+            )}
+            <Link
+              href={`/instructors/${instructorSlug}`}
+              className="text-blue-700 font-medium hover:underline"
+            >
+              {/* Show instructor name if available, fallback to slug */}
+              {instructorName}
+            </Link>
+            {instructor.bio && (
+              <span className="text-xs text-gray-500 ml-2 line-clamp-1 max-w-xs">
+                {instructor.bio.replace(/<[^>]+>/g, "").slice(0, 60)}...
+              </span>
+            )}
+          </div>
+        )}
         <article
           className="prose prose-blue max-w-none mb-8"
           dangerouslySetInnerHTML={{ __html: course.content }}
