@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 
 interface SearchResult {
   id: string;
@@ -24,7 +24,7 @@ interface CategoryResults {
 export default function SearchPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const query = searchParams.get('q') || '';
+  const query = searchParams.get("q") || "";
   const [searchTerm, setSearchTerm] = useState(query);
   const [results, setResults] = useState<CategoryResults[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,16 +49,18 @@ export default function SearchPage() {
     setError(null);
 
     try {
-      const response = await fetch(`/api/typesense-search?q=${encodeURIComponent(searchQuery)}`);
-      
+      const response = await fetch(
+        `/api/typesense-search?q=${encodeURIComponent(searchQuery)}`
+      );
+
       if (!response.ok) {
-        throw new Error('Search failed');
+        throw new Error("Search failed");
       }
 
       const data = await response.json();
       setResults(data.results || []);
     } catch (err) {
-      setError('An error occurred while searching. Please try again later.');
+      setError("An error occurred while searching. Please try again later.");
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -74,14 +76,14 @@ export default function SearchPage() {
 
   const getCollectionLink = (result: SearchResult) => {
     switch (result._collection) {
-      case 'courses':
+      case "courses":
         return `/courses/${result.databaseId || result.id}`;
-      case 'posts':
+      case "posts":
         return `/blog/${result.slug || result.id}`;
-      case 'instructors':
+      case "instructors":
         return `/instructors/${result.slug || result.id}`;
       default:
-        return '#';
+        return "#";
     }
   };
 
@@ -101,8 +103,8 @@ export default function SearchPage() {
               className="w-full px-4 py-2 rounded-l-md border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
               aria-label="Search"
             />
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-r-md hover:bg-blue-700 transition-colors"
             >
               Search
@@ -126,7 +128,9 @@ export default function SearchPage() {
         {!isLoading && !error && query && results.length === 0 && (
           <div className="text-center py-10">
             <p className="text-gray-600 mb-2">No results found for "{query}"</p>
-            <p className="text-sm text-gray-500">Try different keywords or check your spelling</p>
+            <p className="text-sm text-gray-500">
+              Try different keywords or check your spelling
+            </p>
           </div>
         )}
 
@@ -135,24 +139,33 @@ export default function SearchPage() {
             <h2 className="text-xl font-bold text-blue-800 mb-4 border-b border-blue-100 pb-2">
               {categoryResults.collection.label} ({categoryResults.totalHits})
             </h2>
-            
+
             {categoryResults.hits.length === 0 ? (
-              <p className="text-gray-600">No {categoryResults.collection.label.toLowerCase()} found matching your search</p>
+              <p className="text-gray-600">
+                No {categoryResults.collection.label.toLowerCase()} found
+                matching your search
+              </p>
             ) : (
               <div className="space-y-6">
                 {categoryResults.hits.map((result) => (
-                  <div key={result.id} className="bg-white rounded-xl shadow-sm border border-blue-100 p-6">
-                    <Link href={getCollectionLink(result)} className="block group">
+                  <div
+                    key={result.id}
+                    className="bg-white rounded-xl shadow-sm border border-blue-100 p-6"
+                  >
+                    <Link
+                      href={getCollectionLink(result)}
+                      className="block group"
+                    >
                       <h3 className="text-lg font-semibold text-blue-900 mb-2 group-hover:text-blue-600">
                         {result.title}
                       </h3>
-                      
-                      {result._collection === 'courses' && (
+
+                      {result._collection === "courses" && (
                         <div className="flex flex-wrap gap-2 mb-2">
                           {result.difficulty && (
                             <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">
-                              {Array.isArray(result.difficulty) 
-                                ? result.difficulty.join(', ')
+                              {Array.isArray(result.difficulty)
+                                ? result.difficulty.join(", ")
                                 : result.difficulty}
                             </span>
                           )}
@@ -173,11 +186,12 @@ export default function SearchPage() {
                       {(result.content || result.excerpt || result.bio) && (
                         <p className="text-gray-600 text-sm line-clamp-2 mb-1">
                           {(result.content || result.excerpt || result.bio)
-                            .replace(/<[^>]*>/g, '')
-                            .substring(0, 150)}...
+                            .replace(/<[^>]*>/g, "")
+                            .substring(0, 150)}
+                          ...
                         </p>
                       )}
-                      
+
                       <span className="text-blue-600 text-sm font-medium hover:underline">
                         View details →
                       </span>

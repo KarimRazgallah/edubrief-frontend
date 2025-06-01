@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { usePathname, useSearchParams } from 'next/navigation';
-import Script from 'next/script';
-import { useEffect } from 'react';
+import { usePathname, useSearchParams } from "next/navigation";
+import Script from "next/script";
+import { useEffect } from "react";
 
-export default function GoogleAnalytics({ 
-  GA_MEASUREMENT_ID 
-}: { 
-  GA_MEASUREMENT_ID: string 
+export default function GoogleAnalytics({
+  GA_MEASUREMENT_ID,
+}: {
+  GA_MEASUREMENT_ID: string;
 }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -15,10 +15,12 @@ export default function GoogleAnalytics({
   useEffect(() => {
     if (!GA_MEASUREMENT_ID || pathname === undefined) return;
 
-    const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
+    const url =
+      pathname +
+      (searchParams?.toString() ? `?${searchParams.toString()}` : "");
 
     // Track pageviews for client-side navigation
-    window.gtag?.('config', GA_MEASUREMENT_ID, {
+    window.gtag?.("config", GA_MEASUREMENT_ID, {
       page_path: url,
     });
   }, [pathname, searchParams, GA_MEASUREMENT_ID]);

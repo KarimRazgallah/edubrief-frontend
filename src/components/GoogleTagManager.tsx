@@ -1,12 +1,8 @@
-'use client';
+"use client";
 
-import Script from 'next/script';
+import Script from "next/script";
 
-export default function GoogleTagManager({ 
-  GTM_ID 
-}: { 
-  GTM_ID: string 
-}) {
+export default function GoogleTagManager({ GTM_ID }: { GTM_ID: string }) {
   if (!GTM_ID) {
     return null;
   }

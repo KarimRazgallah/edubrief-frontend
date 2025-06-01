@@ -39,8 +39,8 @@ async function fetchInstructorSlugs() {
 }
 
 export default async function sitemap() {
-  const baseUrl = "https://edubrief.vercel.app";  // Replace with your actual domain
-  
+  const baseUrl = "https://edubrief.vercel.app"; // Replace with your actual domain
+
   // Define static routes
   const staticRoutes = [
     {
@@ -95,7 +95,9 @@ export default async function sitemap() {
   const instructors = await fetchInstructorSlugs();
   const instructorRoutes = instructors.map((instructor) => ({
     url: `${baseUrl}/instructors/${instructor.slug}`,
-    lastModified: instructor.modified ? new Date(instructor.modified) : new Date(),
+    lastModified: instructor.modified
+      ? new Date(instructor.modified)
+      : new Date(),
     priority: 0.7,
   }));
 

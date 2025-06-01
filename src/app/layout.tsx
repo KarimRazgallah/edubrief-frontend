@@ -71,8 +71,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ''} />
-        <GoogleTagManager GTM_ID={process.env.NEXT_PUBLIC_GTM_ID || ''} />
+        <GoogleAnalytics
+          GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ""}
+        />
+        <GoogleTagManager GTM_ID={process.env.NEXT_PUBLIC_GTM_ID || ""} />
         {/* Navigation Bar */}
         <header className="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-blue-100 shadow-sm">
           <nav className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">

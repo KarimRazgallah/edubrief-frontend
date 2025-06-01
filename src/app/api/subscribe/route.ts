@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server';
-import sgMail from '@sendgrid/mail';
-import client from '@sendgrid/client';
+import { NextResponse } from "next/server";
+import sgMail from "@sendgrid/mail";
+import client from "@sendgrid/client";
 
 // Set SendGrid API key
-sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
-client.setApiKey(process.env.SENDGRID_API_KEY || '');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
+client.setApiKey(process.env.SENDGRID_API_KEY || "");
 
 export async function POST(request: Request) {
   try {
@@ -12,7 +12,7 @@ export async function POST(request: Request) {
 
     if (!email) {
       return NextResponse.json(
-        { message: 'Email is required' },
+        { message: "Email is required" },
         { status: 400 }
       );
     }
@@ -21,14 +21,14 @@ export async function POST(request: Request) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
-        { message: 'Invalid email format' },
+        { message: "Invalid email format" },
         { status: 400 }
       );
     }
 
     // Add contact to SendGrid marketing list
     const listId = process.env.SENDGRID_LIST_ID;
-    
+
     if (listId) {
       // Use SendGrid client to add the contact to the list
       const data = {
@@ -38,15 +38,15 @@ export async function POST(request: Request) {
             custom_fields: {
               // You can add custom fields here if needed
               // e.g. w1: 'Subscriber from website'
-            }
-          }
+            },
+          },
         ],
         list_ids: [listId],
       };
 
       await client.request({
-        method: 'PUT',
-        url: '/v3/marketing/contacts',
+        method: "PUT",
+        url: "/v3/marketing/contacts",
         body: data,
       });
     }
@@ -54,8 +54,8 @@ export async function POST(request: Request) {
     // Send confirmation email
     const confirmationMsg = {
       to: email,
-      from: process.env.FROM_EMAIL || 'noreply@edubrief.com',
-      subject: 'Welcome to the EduBrief Newsletter!',
+      from: process.env.FROM_EMAIL || "noreply@edubrief.com",
+      subject: "Welcome to the EduBrief Newsletter!",
       text: `
         Thank you for subscribing to the EduBrief newsletter!
         
@@ -92,15 +92,14 @@ export async function POST(request: Request) {
 
     await sgMail.send(confirmationMsg);
 
-    return NextResponse.json({ 
-      message: 'Successfully subscribed to the newsletter'
+    return NextResponse.json({
+      message: "Successfully subscribed to the newsletter",
     });
-    
   } catch (error) {
-    console.error('Newsletter subscription error:', error);
-    
+    console.error("Newsletter subscription error:", error);
+
     return NextResponse.json(
-      { message: 'Failed to subscribe. Please try again later.' },
+      { message: "Failed to subscribe. Please try again later." },
       { status: 500 }
     );
   }

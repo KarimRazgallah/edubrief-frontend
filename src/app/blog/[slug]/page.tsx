@@ -1,8 +1,8 @@
-import { gql } from '@apollo/client';
-import client from '../../../../lib/apolloClient';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { Metadata } from 'next';
+import { gql } from "@apollo/client";
+import client from "../../../../lib/apolloClient";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
 interface BlogPostProps {
   params: { slug: string };
@@ -51,24 +51,25 @@ async function fetchPostBySlug(slug: string) {
       }
     `,
     variables: { slug },
-    fetchPolicy: 'no-cache',
+    fetchPolicy: "no-cache",
   });
   return data.post;
 }
 
-async function fetchRelatedPosts(categoryIds: string[], postId: string, limit = 3) {
+async function fetchRelatedPosts(
+  categoryIds: string[],
+  postId: string,
+  limit = 3
+) {
   // Only fetch if we have categories to match against
   if (!categoryIds.length) return [];
-  
+
   const { data } = await client.query({
     query: gql`
       query ($categoryIds: [ID], $postId: ID!, $limit: Int!) {
         posts(
-          first: $limit, 
-          where: { 
-            categoryIn: $categoryIds, 
-            notIn: [$postId]
-          }
+          first: $limit
+          where: { categoryIn: $categoryIds, notIn: [$postId] }
         ) {
           nodes {
             id
@@ -83,14 +84,14 @@ async function fetchRelatedPosts(categoryIds: string[], postId: string, limit = 
         }
       }
     `,
-    variables: { 
-      categoryIds, 
-      postId, 
-      limit
+    variables: {
+      categoryIds,
+      postId,
+      limit,
     },
-    fetchPolicy: 'no-cache',
+    fetchPolicy: "no-cache",
   });
-  
+
   return data.posts.nodes;
 }
 
@@ -99,12 +100,12 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
   if (!post) return notFound();
 
   // Format date
-  const formattedDate = new Date(post.date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
+  const formattedDate = new Date(post.date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
-  
+
   // Get category IDs for fetching related posts
   const categoryIds = post.categories.nodes.map((cat: any) => cat.id);
   const relatedPosts = await fetchRelatedPosts(categoryIds, post.id);
@@ -121,12 +122,12 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
             />
           </div>
         )}
-        
+
         <div className="p-6 md:p-8">
           <div className="flex flex-wrap gap-2 mb-4">
             {post.categories.nodes.map((category: any) => (
-              <Link 
-                key={category.id} 
+              <Link
+                key={category.id}
                 href={`/blog?category=${category.slug}`}
                 className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full hover:bg-blue-200 transition-colors"
               >
@@ -134,11 +135,11 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
               </Link>
             ))}
           </div>
-          
+
           <h1 className="text-3xl font-extrabold text-blue-900 mb-4">
             {post.title}
           </h1>
-          
+
           <div className="flex items-center gap-3 mb-6 pb-6 border-b border-blue-100">
             {post.author?.node?.avatar?.url && (
               <img
@@ -149,17 +150,17 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
             )}
             <div>
               <p className="font-medium text-blue-800">
-                {post.author?.node?.name || 'Unknown Author'}
+                {post.author?.node?.name || "Unknown Author"}
               </p>
               <p className="text-sm text-gray-500">{formattedDate}</p>
             </div>
           </div>
-          
-          <div 
+
+          <div
             className="prose prose-blue max-w-none mb-8"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
-          
+
           {post.tags?.nodes?.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-6 pt-6 border-t border-blue-100">
               {post.tags.nodes.map((tag: any) => (
@@ -174,10 +175,12 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
           )}
         </div>
       </article>
-      
+
       {relatedPosts.length > 0 && (
         <section className="max-w-4xl mx-auto mt-12">
-          <h2 className="text-2xl font-bold text-blue-900 mb-6">Related Posts</h2>
+          <h2 className="text-2xl font-bold text-blue-900 mb-6">
+            Related Posts
+          </h2>
           <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
             {relatedPosts.map((related: any) => (
               <Link
@@ -204,7 +207,7 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
           </div>
         </section>
       )}
-      
+
       <div className="max-w-4xl mx-auto mt-8">
         <Link
           href="/blog"
