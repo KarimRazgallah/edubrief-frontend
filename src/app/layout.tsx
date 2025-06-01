@@ -31,13 +31,19 @@ export default function RootLayout({
         <header className="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-blue-100 shadow-sm">
           <nav className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
             <div className="flex items-center gap-2">
-              <span className="text-2xl font-extrabold text-blue-700 tracking-tight">
+              <a
+                href="/"
+                className="text-2xl font-extrabold text-blue-700 tracking-tight"
+              >
                 EduBrief
-              </span>
+              </a>
             </div>
             <ul className="flex gap-6 text-blue-800 font-medium">
               <li>
-                <a href="#" className="hover:text-blue-600 transition-colors">
+                <a
+                  href="/courses"
+                  className="hover:text-blue-600 transition-colors"
+                >
                   Courses
                 </a>
               </li>
@@ -47,7 +53,10 @@ export default function RootLayout({
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-blue-600 transition-colors">
+                <a
+                  href="/instructors"
+                  className="hover:text-blue-600 transition-colors"
+                >
                   Instructors
                 </a>
               </li>
