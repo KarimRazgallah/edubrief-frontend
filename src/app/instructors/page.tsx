@@ -55,10 +55,15 @@ export default async function InstructorsPage() {
               </h2>
               {instructor.instructors?.bio && (
                 <div className="text-blue-700 text-sm text-center line-clamp-3 mb-2">
-                  {instructor.instructors.bio.replace(/<[^>]+>/g, "").slice(0, 100)}...
+                  {instructor.instructors.bio
+                    .replace(/<[^>]+>/g, "")
+                    .slice(0, 100)}
+                  ...
                 </div>
               )}
-              <span className="mt-auto text-blue-600 font-medium hover:underline">View Profile →</span>
+              <span className="mt-auto text-blue-600 font-medium hover:underline">
+                View Profile →
+              </span>
             </Link>
           ))}
         </div>
