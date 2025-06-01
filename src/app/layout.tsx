@@ -27,7 +27,55 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* Navigation Bar */}
+        <header className="sticky top-0 z-30 bg-white/80 backdrop-blur border-b border-blue-100 shadow-sm">
+          <nav className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
+            <div className="flex items-center gap-2">
+              <span className="text-2xl font-extrabold text-blue-700 tracking-tight">
+                EduBrief
+              </span>
+            </div>
+            <ul className="flex gap-6 text-blue-800 font-medium">
+              <li>
+                <a href="#" className="hover:text-blue-600 transition-colors">
+                  Courses
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-600 transition-colors">
+                  Blog
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-600 transition-colors">
+                  Instructors
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </header>
+        {/* Main Content */}
         {children}
+        {/* Footer */}
+        <footer className="mt-16 border-t border-blue-100 bg-white/80 backdrop-blur py-6">
+          <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between px-4 gap-4">
+            <span className="text-blue-700 font-bold text-lg">EduBrief</span>
+            <nav className="flex gap-6 text-blue-700 text-sm">
+              <a href="#" className="hover:text-blue-500 transition-colors">
+                Privacy Policy
+              </a>
+              <a href="#" className="hover:text-blue-500 transition-colors">
+                Terms
+              </a>
+              <a href="#" className="hover:text-blue-500 transition-colors">
+                Contact
+              </a>
+            </nav>
+            <span className="text-blue-400 text-xs">
+              &copy; {new Date().getFullYear()} EduBrief. All rights reserved.
+            </span>
+          </div>
+        </footer>
       </body>
     </html>
   );
